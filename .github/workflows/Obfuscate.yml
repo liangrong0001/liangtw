@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
+
       - name: Check out the code
         uses: actions/checkout@v4
 
@@ -31,8 +31,7 @@ jobs:
        - name: Download and extract latest BPB worker
         run: |
            curl -L -o _worker.js https://github.com/liangrong0001/date/releases/download/worker.js
-
-    mv _worker.js origin.js
+           mv _worker.js origin.js
 
 
       - name: Obfuscate BPB worker js
