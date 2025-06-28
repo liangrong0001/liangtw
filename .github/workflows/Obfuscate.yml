@@ -28,7 +28,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y unzip
 
-      - name: Download latest BPB worker
+      - name: Download latest  worker
         run: |
           curl -L -o origin.js \
             https://raw.githubusercontent.com/liangrong0001/date/main/releases/download/worker.js
