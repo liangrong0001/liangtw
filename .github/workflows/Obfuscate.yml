@@ -1,9 +1,8 @@
-name: Build Obfuscate  Panel
+name: Build Obfuscate Panel
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   schedule:
     - cron: "0 1 * * *"
 
@@ -26,43 +25,40 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g javascript-obfuscator
+          sudo apt-get update -y
           sudo apt-get install -y unzip
 
-      - name: Download and extract latest BPB worker
+      - name: Download latest BPB worker
         run: |
-          curl -L -o  _worker.js https://raw.githubusercontent.com/liangrong0001/date/main/releases/download/worker.js
+          curl -L -o origin.js \
+            https://raw.githubusercontent.com/liangrong0001/date/main/releases/download/worker.js
 
-          mv _worker.js origin.js
-
-      - name: Obfuscate  worker js
+      - name: Obfuscate worker js
         run: |
           javascript-obfuscator origin.js --output _worker.js \
-  --compact true \
-  --control-flow-flattening true \
-  --control-flow-flattening-threshold 1.0 \
-  --dead-code-injection true \
-  --dead-code-injection-threshold 1.0 \
-  --disable-console-output true \
-  --identifier-names-generator hexadecimal \
-  --rename-globals true \
-  --rotate-string-array true \
-  --self-defending true \
-  --simplify true \
-  --split-strings true \
-  --split-strings-chunk-length 5 \
-  --string-array true \
-  --string-array-encoding base64 \
-  --string-array-index-shift true \
-  --string-array-wrappers-type function \
-  --string-array-wrappers-count 3 \
-  --string-array-threshold 1.0 \
-  --transform-object-keys true \
-  --unicode-escape-sequence true
+            --compact true \
+            --control-flow-flattening true \
+            --control-flow-flattening-threshold 0.7 \
+            --dead-code-injection true \
+            --dead-code-injection-threshold 0.4 \
+            --disable-console-output true \
+            --identifier-names-generator hexadecimal \
+            --rename-globals false \
+            --rotate-string-array true \
+            --self-defending true \
+            --simplify true \
+            --split-strings true \
+            --split-strings-chunk-length 5 \
+            --string-array true \
+            --string-array-encoding base64 \
+            --string-array-threshold 0.75 \
+            --transform-object-keys true \
+            --unicode-escape-sequence true
 
-      - name: 提交更改
+      - name: Commit obfuscated file
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: ':arrow_up: update latest  panel'
+          commit_message: ':arrow_up: update latest panel'
           commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
           push_options: '--set-upstream'
