@@ -44,7 +44,6 @@ jobs:
             --disable-console-output true \
             --identifier-names-generator hexadecimal \
             --rename-globals false \
-            --rotate-string-array true \
             --self-defending true \
             --simplify true \
             --split-strings true \
