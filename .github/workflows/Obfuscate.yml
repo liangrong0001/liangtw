@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-
+    steps:
       - name: Check out the code
         uses: actions/checkout@v4
 
@@ -26,13 +26,14 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g javascript-obfuscator
-         
+          sudo apt-get install -y unzip
 
-       - name: Download and extract latest BPB worker
-        run: |
-           curl -L -o _worker.js https://github.com/liangrong0001/date/releases/download/worker.js
-           mv _worker.js origin.js
+    
+          - name: Download and extract latest BPB worker
+  run: |
+    curl -L -o worker.js https://github.com/liangrong0001/date/releases/download/v1.0/worker.js
 
+        mv _worker.js origin.js
 
       - name: Obfuscate BPB worker js
         run: |
