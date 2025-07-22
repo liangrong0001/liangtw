@@ -1,4 +1,4 @@
-name: Build Obfuscate Panel
+ name: Build Obfuscate Panel
 
 on:
   push:
