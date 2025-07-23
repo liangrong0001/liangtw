@@ -1,4 +1,4 @@
- name: Build Obfuscate Panel
+name: Build Obfuscate Panel
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: Download latest  worker
         run: |
           curl -L -o origin.js \
-            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.2.0/worker.js
+            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.3.0/worker.js
             
       - name: Obfuscate worker js
         run: |
