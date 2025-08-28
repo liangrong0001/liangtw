@@ -31,21 +31,21 @@ jobs:
       - name: Download latest  worker
         run: |
           curl -L -o origin.js \
-            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.3.0/worker.js?token=GHSAT0AAAAAADJKZKCRXXCSFBXGMFGRPSAW2FKYWEA
+            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.4.0/worker.js?token=GHSAT0AAAAAADJKZKCQF7JX6XRPXL5WSNXI2FQMB2Q
             
       - name: Obfuscate worker js
         run: |
           javascript-obfuscator origin.js --output _worker.js \
             --compact true \
             --control-flow-flattening true \
-            --control-flow-flattening-threshold 0.4 \
+            --control-flow-flattening-threshold 0.2 \
             --dead-code-injection true \
-            --dead-code-injection-threshold 0.2 \
+            --dead-code-injection-threshold 0.1 \
             --identifier-names-generator hexadecimal \
             --rename-globals true \
             --string-array true \
             --string-array-encoding rc4 \
-            --string-array-threshold 0.7 \
+            --string-array-threshold 0.5 \
             --transform-object-keys true \
             --unicode-escape-sequence true
 
