@@ -1,5 +1,55 @@
 
 import { connect } from 'cloudflare:sockets';
+// 复用解码器
+const td = new TextDecoder();
+const te = new TextEncoder();
+
+// 高效读取 HTTP 头部直到 \r\n\r\n
+async function readHttpHeaders(reader) {
+  const chunks = [];
+  let total = 0;
+  let tail = new Uint8Array(0);
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) throw new Error('proxy closed before headers');
+
+    chunks.push(value);
+    total += value.length;
+
+    const merged = new Uint8Array(tail.length + value.length);
+    merged.set(tail, 0);
+    merged.set(value, tail.length);
+
+    let end = -1;
+    for (let i = 0; i + 3 < merged.length; i++) {
+      if (
+        merged[i] === 13 && merged[i+1] === 10 &&
+        merged[i+2] === 13 && merged[i+3] === 10
+      ) { end = i + 4; break; }
+    }
+
+    if (end !== -1) {
+      const headerTotalLen = (total - value.length) +
+        Math.max(0, end - Math.max(0, tail.length));
+      const buf = new Uint8Array(headerTotalLen);
+      let ofs = 0, remain = headerTotalLen;
+      for (const c of chunks) {
+        const take = Math.min(remain, c.length);
+        buf.set(c.subarray(0, take), ofs);
+        ofs += take; remain -= take;
+        if (remain === 0) break;
+      }
+      const headerText = td.decode(buf);
+      const leftoverStart = end - Math.max(0, tail.length);
+      const leftover = value.subarray(leftoverStart);
+      return { headerText, leftover };
+    }
+
+    const keep = Math.min(3, merged.length);
+    tail = merged.subarray(merged.length - keep);
+  }
+}
 
 let userID = 'liangrongup';
 let proxyIP = '';
