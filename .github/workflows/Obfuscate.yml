@@ -31,7 +31,7 @@ jobs:
       - name: Download latest  worker
         run: |
           curl -L -o origin.js \
-            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.4.0/worker.js?token=GHSAT0AAAAAADJKZKCQ4ZI2AA2BN3ALQO5U2F4D4ZQ
+            https://raw.githubusercontent.com/liangrong0001/date/refs/heads/main/releases/download/v.4.0/worker.js?token=GHSAT0AAAAAADJKZKCQQCWAZEOXG2DMIULS2F4ECAA
             
       - name: Obfuscate worker js
         run: |
